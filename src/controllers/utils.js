@@ -30,6 +30,93 @@ const getApiInfo = async () => {
     }
 }
 
+const getApiInfo2 = async () => {
+    try {
+        let api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=40&limit=40`).then(e => e.data.results)
+        let prom = api.map(pokemon => pokemon.url)
+        let join = prom.map(url => axios(url).then(e => e.data))
+        join = await Promise.all(join)
+
+        let finaljoin = join.map(e => {
+            return {
+                id: e.id,
+                name: e.name,
+                img: e.sprites.other.home.front_default,
+                sprite: e.sprites.versions["generation-v"]["black-white"].animated.front_default,
+                attack: e.stats[1].base_stat,
+                defense : e.stats[2].base_stat,
+                hp: e.stats[0].base_stat,
+                speed: e.stats[5].base_stat,
+                weight: e.weight,
+                height: e.height,
+                type: e.types.map((t) => t.type.name),
+            }
+        })
+        return finaljoin
+    }
+    catch (error) {
+        console.log("Something went wrong, ", error)
+    }
+}
+
+const getApiInfo3 = async () => {
+    try {
+        let api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=80&limit=40`).then(e => e.data.results)
+        let prom = api.map(pokemon => pokemon.url)
+        let join = prom.map(url => axios(url).then(e => e.data))
+        join = await Promise.all(join)
+
+        let finaljoin = join.map(e => {
+            return {
+                id: e.id,
+                name: e.name,
+                img: e.sprites.other.home.front_default,
+                sprite: e.sprites.versions["generation-v"]["black-white"].animated.front_default,
+                attack: e.stats[1].base_stat,
+                defense : e.stats[2].base_stat,
+                hp: e.stats[0].base_stat,
+                speed: e.stats[5].base_stat,
+                weight: e.weight,
+                height: e.height,
+                type: e.types.map((t) => t.type.name),
+            }
+        })
+        return finaljoin
+    }
+    catch (error) {
+        console.log("Something went wrong, ", error)
+    }
+}
+
+const getApiInfo4 = async () => {
+    try {
+        let api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=120&limit=31`).then(e => e.data.results)
+        let prom = api.map(pokemon => pokemon.url)
+        let join = prom.map(url => axios(url).then(e => e.data))
+        join = await Promise.all(join)
+
+        let finaljoin = join.map(e => {
+            return {
+                id: e.id,
+                name: e.name,
+                img: e.sprites.other.home.front_default,
+                sprite: e.sprites.versions["generation-v"]["black-white"].animated.front_default,
+                attack: e.stats[1].base_stat,
+                defense : e.stats[2].base_stat,
+                hp: e.stats[0].base_stat,
+                speed: e.stats[5].base_stat,
+                weight: e.weight,
+                height: e.height,
+                type: e.types.map((t) => t.type.name),
+            }
+        })
+        return finaljoin
+    }
+    catch (error) {
+        console.log("Something went wrong, ", error)
+    }
+}
+
 const getDbInfo = async () => {
     try {
         let db = await Pokemon.findAll({
@@ -65,8 +152,11 @@ const getMixedInfo = async () => {
 
     try {
         let api1 = await getApiInfo()
+        let api2 = await getApiInfo2()
+        let api3 = await getApiInfo3()
+        let api4 = await getApiInfo4()
         let db = await getDbInfo()
-        let allinfo = Promise.all([...db, ...api1])
+        let allinfo = Promise.all([...db, ...api1, ...api2, ...api3, ...api4])
         return allinfo
     } catch (error) {
         console.log("Something went wrong, ", error)
