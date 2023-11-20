@@ -6,7 +6,7 @@ const getAllPokemons = async (req, res) => {
     try {
         const {name} = req.query
         if(name){
-            let allPokemons = await axios("https://pokeapi.co/api/v2/pokemon?limit=10000").then(e => e.data.results)
+            let allPokemons = await axios("https://pokeapi.co/api/v2/pokemon?limit=10").then(e => e.data.results)
             let filtered = allPokemons.filter(e => e.name.includes(name)).map(e => e.url)
             let promised = filtered.map(url => axios(url).then(e => e.data))
             promised = await Promise.all(promised)
